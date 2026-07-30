@@ -46,18 +46,16 @@ export function UnifiedFilterBar({
     handleUnificadaFilterChange
   } = useUnifiedFilter(schema, onSearchCallback, onClearCallback, onUrlUpdate);
 
-  // Compute unificada options (exclude those already selected)
   const unificadaOptions: GenericOptionList = [];
   schema.forEach(item => {
-     if (item.inputType === 'select' && item.options) {
-        item.options.forEach(opt => {
-           // check if already active
-           const isActive = activeUnificadaFilters.some(f => f.type === item.urlKey && String(f.id) === String(opt.id));
-           if (!isActive) {
-              unificadaOptions.push({ ...opt, type: item.urlKey });
-           }
-        });
-     }
+    if (item.inputType === 'select' && item.options) {
+      item.options.forEach(opt => {
+        const isActive = activeUnificadaFilters.some(f => f.type === item.urlKey && String(f.id) === String(opt.id));
+        if (!isActive) {
+          unificadaOptions.push({ ...opt, type: item.urlKey });
+        }
+      });
+    }
   });
 
   return (
@@ -88,25 +86,25 @@ export function UnifiedFilterBar({
         >
           {topBarPrefix}
           {schema.filter(item => item.placement === 'topBar').map(item => {
-             if (item.inputType === 'switch') {
-                const val = (activeFilters[item.urlKey] as boolean) || false;
-                return (
-                   <Box key={item.urlKey} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                      <FormLabel component="legend">
-                         <Typography color={val ? "warning" : 'textDisabled'}>{item.label}</Typography>
-                      </FormLabel>
-                      <Switch 
-                         value={val}
-                         checked={val}
-                         color="warning" 
-                         onChange={(e) => handleFilterChange(item.urlKey, e.target.checked)} 
-                      />
-                   </Box>
-                );
-             }
-             return null;
+            if (item.inputType === 'switch') {
+              const val = (activeFilters[item.urlKey] as boolean) || false;
+              return (
+                <Box key={item.urlKey} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                  <FormLabel component="legend">
+                    <Typography color={val ? "warning" : 'textDisabled'}>{item.label}</Typography>
+                  </FormLabel>
+                  <Switch
+                    value={val}
+                    checked={val}
+                    color="warning"
+                    onChange={(e) => handleFilterChange(item.urlKey, e.target.checked)}
+                  />
+                </Box>
+              );
+            }
+            return null;
           })}
-          
+
           {hideSearchInput ? (
             customSearchPlaceholder
           ) : (
@@ -176,7 +174,7 @@ export function UnifiedFilterBar({
               </Box>
             );
           }
-          
+
           return null;
         })}
       </Box>
