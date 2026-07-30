@@ -4,44 +4,44 @@ import { Box, Collapse, Button, useMediaQuery, ClickAwayListener } from "@mui/ma
 import SearchIcon from "@mui/icons-material/Search";
 import { ReactNode } from "react";
 
-type Props = {
-  isOpen: boolean;
-  isPending: boolean;
-  onSearch: () => void;
-  onClear: () => void;
+type PropsLayoutFiltro = {
+  estaAberto: boolean;
+  estaPendente: boolean;
+  aoPesquisar: () => void;
+  aoLimpar: () => void;
   children: ReactNode;
-  searchUnificada: ReactNode;
-  isAbsolute?: boolean;
-  containerGap?: number | string;
-  onClose?: () => void;
+  buscaUnificada: ReactNode;
+  ehAbsoluto?: boolean;
+  espacamentoContainer?: number | string;
+  aoFechar?: () => void;
 };
 
-export function FilterLayout({
-  isOpen,
-  isPending,
-  onSearch,
-  onClear,
+export function LayoutFiltro({
+  estaAberto,
+  estaPendente,
+  aoPesquisar,
+  aoLimpar,
   children,
-  searchUnificada,
-  isAbsolute = false,
-  containerGap = 4,
-  onClose,
-}: Readonly<Props>) {
-  const isMobileOrTablet = useMediaQuery("(max-width:900px)");
+  buscaUnificada,
+  ehAbsoluto = false,
+  espacamentoContainer = 4,
+  aoFechar,
+}: Readonly<PropsLayoutFiltro>) {
+  const ehMobileOuTablet = useMediaQuery("(max-width:900px)");
 
   return (
-    <ClickAwayListener mouseEvent="onMouseDown" onClickAway={() => { if (isOpen && onClose) onClose(); }}>
+    <ClickAwayListener mouseEvent="onMouseDown" onClickAway={() => { if (estaAberto && aoFechar) aoFechar(); }}>
       <Box sx={{ position: "relative" }}>
-        {searchUnificada}
+        {buscaUnificada}
         <Collapse
-          in={isOpen}
+          in={estaAberto}
           orientation="vertical"
           sx={{
-            position: isAbsolute ? "absolute" : "relative",
+            position: ehAbsoluto ? "absolute" : "relative",
             width: "100%",
-            zIndex: isAbsolute ? 1300 : "auto",
+            zIndex: ehAbsoluto ? 1300 : "auto",
             left: 0,
-            pointerEvents: isAbsolute ? "none" : "auto",
+            pointerEvents: ehAbsoluto ? "none" : "auto",
           }}
         >
           <Box
@@ -50,15 +50,15 @@ export function FilterLayout({
               p: "24px",
               flexWrap: "wrap",
               flexDirection: "column",
-              gap: containerGap,
+              gap: espacamentoContainer,
               background: "#F2F2F2",
               width: "100%",
               maxWidth: 1100,
               mx: "auto",
               borderRadius: "10px",
-              boxShadow: isAbsolute ? "0px 4px 6px rgba(0,0,0,0.30), 0px 10px 20px rgba(0,0,0,0.30), 0px 20px 40px rgba(0,0,0,0.30)" : "none",
-              border: isAbsolute ? "1px solid #207840" : "none",
-              mt: isAbsolute ? 0 : 2,
+              boxShadow: ehAbsoluto ? "0px 4px 6px rgba(0,0,0,0.30), 0px 10px 20px rgba(0,0,0,0.30), 0px 20px 40px rgba(0,0,0,0.30)" : "none",
+              border: ehAbsoluto ? "1px solid #207840" : "none",
+              mt: ehAbsoluto ? 0 : 2,
               pointerEvents: "auto",
             }}
           >
@@ -68,7 +68,7 @@ export function FilterLayout({
               sx={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: isMobileOrTablet ? "center" : "flex-end",
+                justifyContent: ehMobileOuTablet ? "center" : "flex-end",
                 gap: 3,
                 width: "100%",
                 mt: 0,
@@ -76,21 +76,21 @@ export function FilterLayout({
               }}
             >
               <Button
-                onClick={onSearch}
+                onClick={aoPesquisar}
                 startIcon={<SearchIcon />}
-                disabled={isPending} // Button loading prop not natively supported without LoadingButton, using disabled
+                disabled={estaPendente}
                 sx={{ borderRadius: 2 }}
                 variant="contained"
               >
-                {isPending ? 'Pesquisando...' : 'Pesquisar'}
+                {estaPendente ? 'Pesquisando...' : 'Pesquisar'}
               </Button>
               <Button
-                onClick={onClear}
+                onClick={aoLimpar}
                 color="inherit"
                 variant="outlined"
                 sx={{ borderRadius: 2 }}
               >
-                {isAbsolute ? "Limpar" : "limpar"}
+                {ehAbsoluto ? "Limpar" : "limpar"}
               </Button>
             </Box>
           </Box>
