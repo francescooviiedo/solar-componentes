@@ -14,6 +14,7 @@ export type FilterSchemaItem = {
   inputType: 'select' | 'text' | 'date' | 'switch';
   placement: 'grid' | 'topBar';
   options?: GenericOptionList; // Required if inputType is 'select'
+  valueKey?: string; // Property of GenericOption to use for URL parameter (e.g. 'nome', 'id', 'enum')
   width?: string | number;
 };
 

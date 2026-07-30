@@ -27,7 +27,11 @@ export function useUnifiedFilter(schema: FilterSchema, onSearchCallback?: () => 
         if (item.inputType === 'select') {
           let foundOption: GenericOption | undefined = undefined;
           if (item.options) {
-            foundOption = item.options.find(opt => String(opt.id) === val || String(opt.nome) === val || String(opt.enum) === val);
+            if (item.valueKey) {
+              foundOption = item.options.find(opt => String(opt[item.valueKey!]) === val);
+            } else {
+              foundOption = item.options.find(opt => String(opt.enum ?? opt.id ?? opt.nome) === val || String(opt.id) === val || String(opt.nome) === val);
+            }
           }
 
           if (foundOption) {
@@ -78,7 +82,10 @@ export function useUnifiedFilter(schema: FilterSchema, onSearchCallback?: () => 
       const item = schema.find(s => s.urlKey === filter.type);
       if (item) {
         if (item.inputType === 'select') {
-           params.set(item.urlKey, filter.enum || filter.id || filter.nome);
+           const val = item.valueKey ? filter[item.valueKey] : (filter.enum ?? filter.id ?? filter.nome);
+           if (val !== undefined && val !== null) {
+             params.set(item.urlKey, String(val));
+           }
         } else {
            params.set(item.urlKey, filter.id as string);
         }
@@ -136,7 +143,17 @@ export function useUnifiedFilter(schema: FilterSchema, onSearchCallback?: () => 
       onClear();
       return;
     }
-    setActiveUnificadaFilters(newValue);
+
+    // Deduplicate by filter type (newest selection replaces older chip of the same type)
+    const deduplicatedValue: GenericOptionList = [];
+    for (let i = newValue.length - 1; i >= 0; i--) {
+      const item = newValue[i];
+      if (!deduplicatedValue.some(existing => existing.type === item.type)) {
+        deduplicatedValue.unshift(item);
+      }
+    }
+
+    setActiveUnificadaFilters(deduplicatedValue);
 
     // Sync down to Grid filters
     const newGrid = { ...activeFilters };
@@ -148,7 +165,7 @@ export function useUnifiedFilter(schema: FilterSchema, onSearchCallback?: () => 
        }
     });
 
-    newValue.forEach(val => {
+    deduplicatedValue.forEach(val => {
         const item = schema.find(s => s.urlKey === val.type);
         if (item) {
            if (item.inputType === 'select') {
