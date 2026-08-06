@@ -16,6 +16,7 @@ export type ItemEsquemaFiltro = {
   opcoes?: ListaOpcoesGenericas;
   chaveValor?: string;
   largura?: string | number;
+  removerNaoNumericos?: boolean;
 };
 
 export type EsquemaFiltro = ItemEsquemaFiltro[];

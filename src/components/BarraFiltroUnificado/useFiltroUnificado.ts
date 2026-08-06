@@ -85,7 +85,11 @@ export function useFiltroUnificado(
             params.set(item.chaveUrl, String(val));
           }
         } else {
-          params.set(item.chaveUrl, filtro.id as string);
+          let val = filtro.id as string;
+          if (item.removerNaoNumericos) {
+            val = val.replace(/\D/g, '');
+          }
+          params.set(item.chaveUrl, val);
         }
       }
     });

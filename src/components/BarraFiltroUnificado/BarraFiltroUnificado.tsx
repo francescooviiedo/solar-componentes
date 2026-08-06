@@ -19,6 +19,8 @@ export type PropsBarraFiltroUnificado = {
   sufixoBarraSuperior?: React.ReactNode;
   ocultarEntradaBusca?: boolean;
   placeholderBuscaCustomizado?: React.ReactNode;
+  elementosAcimaBusca?: React.ReactNode;
+  corFundoBusca?: string;
 };
 
 export function BarraFiltroUnificado({
@@ -32,6 +34,8 @@ export function BarraFiltroUnificado({
   sufixoBarraSuperior,
   ocultarEntradaBusca = false,
   placeholderBuscaCustomizado,
+  elementosAcimaBusca,
+  corFundoBusca,
 }: Readonly<PropsBarraFiltroUnificado>) {
   const ehMobileOuTablet = useMediaQuery("(max-width:900px)");
 
@@ -68,22 +72,24 @@ export function BarraFiltroUnificado({
       ehAbsoluto={true}
       espacamentoContainer="24px"
       buscaUnificada={
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            width: "calc(100% + 48px)",
-            mx: "-24px",
-            mt: "-24px",
-            gap: 2,
-            bgcolor: "#D8D8D8",
-            padding: "24px",
-            borderTopLeftRadius: "8px",
-            borderTopRightRadius: "8px",
-            flexDirection: ehMobileOuTablet ? "column" : "row",
-            boxSizing: "border-box",
-          }}
-        >
+        <Box>
+          {elementosAcimaBusca}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "calc(100% + 48px)",
+              mx: "-24px",
+              mt: elementosAcimaBusca ? 0 : "-24px",
+              gap: 2,
+              bgcolor: corFundoBusca ?? "#D8D8D8",
+              padding: "24px",
+              borderTopLeftRadius: elementosAcimaBusca ? 0 : "8px",
+              borderTopRightRadius: "8px",
+              flexDirection: ehMobileOuTablet ? "column" : "row",
+              boxSizing: "border-box",
+            }}
+          >
           {prefixoBarraSuperior}
           {esquema.filter(item => item.posicao === 'topBar').map(item => {
             if (item.tipoEntrada === 'switch') {
@@ -122,6 +128,7 @@ export function BarraFiltroUnificado({
           )}
           {sufixoBarraSuperior}
         </Box>
+      </Box>
       }
     >
       <Box
