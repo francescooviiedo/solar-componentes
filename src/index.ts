@@ -80,3 +80,13 @@ export { default as Paginacao } from './components/ui/shared/Paginacao';
 
 export * from './components/ui/shared/PaginacaoDataGrid';
 export { default as PaginacaoDataGrid } from './components/ui/shared/PaginacaoDataGrid';
+
+// Remanescentes
+export { default as GenericTableBase } from './components/ui/GenericTableBase';
+export * from './components/ui/GenericTableBase';
+
+export { default as BotaoHistoricoDistribuicao } from './components/ui/BotaoHistoricoDistribuicao';
+
+export * from './components/ui/GenericMobileCard';
+
+export { default as BotoesSituacao } from './components/ui/BotoesSituacao';
