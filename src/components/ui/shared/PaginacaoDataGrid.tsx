@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { useGridApiContext, useGridRootProps } from "@mui/x-data-grid";
 import Paginacao from "./Paginacao";
 
