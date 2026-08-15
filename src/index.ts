@@ -27,3 +27,16 @@ export { default as BotoesForm } from './components/ui/BotoesForm';
 export { default as FormField } from './components/ui/FormField';
 
 export { default as Paginacao } from './components/ui/Paginacao';
+
+// Nível 1 & 2 UI Components
+export { default as BotaoHistoricoDistribuicao } from './components/ui/BotaoHistoricoDistribuicao';
+export { FilterLayout } from './components/ui/FilterLayout';
+export { GenericAutocomplete } from './components/ui/GenericAutocomplete';
+export { default as GenericAutocompleteUi } from './components/ui/GenericAutocompleteUi';
+export { default as ProcessoCellHeader } from './components/ui/ProcessoCellHeader';
+export { default as TabelaMobileSkeleton } from './components/ui/TabelaMobileSkeleton';
+export { default as TableCellLoading } from './components/ui/TableCellLoading';
+export { default as MainContent } from './components/ui/MainContent';
+export { default as BotoesSituacao } from './components/ui/BotoesSituacao';
+export { GenericMobileCard } from './components/ui/GenericMobileCard';
+export { default as OldLink } from './components/ui/OldLink';
