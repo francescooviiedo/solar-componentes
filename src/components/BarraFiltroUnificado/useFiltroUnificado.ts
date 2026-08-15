@@ -39,17 +39,17 @@ export function useFiltroUnificado(
           }
 
           if (opcaoEncontrada) {
-            const optGenerica = { ...opcaoEncontrada, tipo: item.chaveUrl };
+            const optGenerica = { ...opcaoEncontrada, tipo: item.chaveUrl, type: item.chaveUrl };
             novosFiltrosAtivos[item.chaveUrl] = optGenerica;
             novosFiltrosUnificadosAtivos.push(optGenerica);
           } else {
             novosFiltrosAtivos[item.chaveUrl] = val;
-            novosFiltrosUnificadosAtivos.push({ id: val, nome: val, tipo: item.chaveUrl });
+            novosFiltrosUnificadosAtivos.push({ id: val, nome: val, tipo: item.chaveUrl, type: item.chaveUrl });
           }
         } else {
           novosFiltrosAtivos[item.chaveUrl] = val;
           const nomeRotulo = item.rotulo ? `${item.rotulo}: ${val}` : val;
-          novosFiltrosUnificadosAtivos.push({ id: val, nome: nomeRotulo, tipo: item.chaveUrl });
+          novosFiltrosUnificadosAtivos.push({ id: val, nome: nomeRotulo, tipo: item.chaveUrl, type: item.chaveUrl });
         }
       } else {
         novosFiltrosAtivos[item.chaveUrl] = null;
@@ -77,7 +77,7 @@ export function useFiltroUnificado(
     });
 
     filtrosUnificadosAtivos.forEach(filtro => {
-      const item = esquema.find(s => s.chaveUrl === filtro.tipo);
+      const filtroTipo = filtro.tipo ?? filtro.type; const item = esquema.find(s => s.chaveUrl === filtroTipo);
       if (item) {
         if (item.tipoEntrada === 'select') {
           const val = item.chaveValor ? filtro[item.chaveValor] : (filtro.enum ?? filtro.id ?? filtro.nome);
@@ -147,9 +147,7 @@ export function useFiltroUnificado(
     const valorDeduplicado: ListaOpcoesGenericas = [];
     for (let i = novoValor.length - 1; i >= 0; i--) {
       const item = novoValor[i];
-      if (!valorDeduplicado.some(existente => existente.tipo === item.tipo)) {
-        valorDeduplicado.unshift(item);
-      }
+      const itemTipo = item.tipo ?? item.type; if (!valorDeduplicado.some(existente => (existente.tipo ?? existente.type) === itemTipo)) { valorDeduplicado.unshift({ ...item, tipo: itemTipo, type: itemTipo }); }
     }
 
     setFiltrosUnificadosAtivos(valorDeduplicado);
@@ -163,7 +161,7 @@ export function useFiltroUnificado(
     });
 
     valorDeduplicado.forEach(val => {
-      const item = esquema.find(s => s.chaveUrl === val.tipo);
+      const valTipo = val.tipo ?? val.type; const item = esquema.find(s => s.chaveUrl === valTipo);
       if (item) {
         if (item.tipoEntrada === 'select') {
           novaGrade[item.chaveUrl] = val;

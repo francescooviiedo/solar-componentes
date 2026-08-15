@@ -1,6 +1,6 @@
 {
   "name": "solar-componentes",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -26,7 +26,7 @@
     "@mui/icons-material": "^7.0.0",
     "@mui/x-data-grid": "^8.0.0",
     "react-hook-form": "^7.0.0",
-    "next": "^15.0.0"
+    "next": ">=15.0.0"
   },
   "devDependencies": {
     "@mui/material": "^7.3.11",

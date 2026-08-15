@@ -7,7 +7,7 @@ import {
   IconButton,
   createFilterOptions,
 } from "@mui/material";
-import { styled, lighten, darken } from "@mui/system";
+import { styled } from "@mui/system";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -18,75 +18,80 @@ const CabecalhoGrupo = styled("div")(({ theme }) => ({
   position: "sticky",
   top: "-8px",
   padding: "4px 10px",
-  color: theme.palette.primary.main,
-  backgroundColor: lighten(theme.palette.primary.light, 0.85),
-  ...theme.applyStyles("dark", {
-    backgroundColor: darken(theme.palette.primary.main, 0.8),
-  }),
+  color: "#207840",
+  fontWeight: "bold",
+  backgroundColor: "#f5f5f5",
 }));
 
 const ItensGrupo = styled("ul")({
   padding: 0,
 });
 
-function redimensionarString(str: string, maxLength: number) {
-  if (str.length <= maxLength) return str;
-  return str.substring(0, maxLength) + '...';
+function redimensionarString(str: string, maxLen: number) {
+  if (!str) return '';
+  if (str.length <= maxLen) return str;
+  return str.substring(0, maxLen) + "...";
 }
 
 type Props = {
-  opcoes: ListaOpcoesGenericas;
-  valor: ListaOpcoesGenericas | null;
-  aoMudar: (
-    event: SyntheticEvent<Element, Event>,
-    novoValor: ListaOpcoesGenericas,
-  ) => void;
-  aoMudarTexto?: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => void;
-  estaAberto: boolean;
-  setEstaAberto: (estaAberto: boolean) => void;
-  aoClicarIcone: () => void;
+  opcoes?: ListaOpcoesGenericas;
+  options?: ListaOpcoesGenericas;
+  valor?: ListaOpcoesGenericas | null;
+  value?: ListaOpcoesGenericas | null;
+  aoMudar?: (event: SyntheticEvent<Element, Event>, novoValor: any) => void;
+  onChange?: (event: SyntheticEvent<Element, Event>, novoValor: any) => void;
+  aoMudarTexto?: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChangeText?: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  estaAberto?: boolean;
+  isOpen?: boolean;
+  setEstaAberto?: (estaAberto: boolean) => void;
+  setIsOpen?: (isOpen: boolean) => void;
+  aoClicarIcone?: () => void;
+  onClickIcon?: () => void;
   adornosInvertidos?: boolean;
+  reversedAdornments?: boolean;
   desabilitado?: boolean;
+  disabled?: boolean;
+  emAnalise?: boolean;
   esquema?: EsquemaFiltro;
 };
 
 const filtroOption = createFilterOptions<OpcaoGenerica>();
 
-export default function AutocompleteBuscaUnificada({
-  opcoes,
-  valor,
-  aoMudar,
-  aoMudarTexto,
-  estaAberto,
-  setEstaAberto,
-  aoClicarIcone,
-  adornosInvertidos = false,
-  desabilitado = false,
-  esquema = [],
-}: Readonly<Props>) {
+export default function AutocompleteBuscaUnificada(props: Readonly<Props>) {
+  const opcoes = props.opcoes ?? props.options ?? [];
+  const valor = props.valor !== undefined ? props.valor : (props.value !== undefined ? props.value : []);
+  const aoMudar = props.aoMudar ?? props.onChange ?? (() => {});
+  const aoMudarTexto = props.aoMudarTexto ?? props.onChangeText;
+  const estaAberto = props.estaAberto ?? props.isOpen ?? false;
+  const setEstaAberto = props.setEstaAberto ?? props.setIsOpen ?? (() => {});
+  const aoClicarIcone = props.aoClicarIcone ?? props.onClickIcon ?? (() => {});
+  const adornosInvertidos = props.adornosInvertidos ?? props.reversedAdornments ?? false;
+  const desabilitado = props.desabilitado ?? props.disabled ?? props.emAnalise ?? false;
+  const esquema = props.esquema ?? [];
+
   const [listaAberta, setListaAberta] = useState(false);
   const [valorEntrada, setValorEntrada] = useState("");
 
   const aoBuscar = () => {
     setListaAberta(false);
 
-    if (valorEntrada.trim() !== "" && esquema) {
+    if (valorEntrada.trim() !== "" && esquema.length > 0) {
       const itensTexto = esquema.filter((item) => item.tipoEntrada === "text");
       if (itensTexto.length === 1) {
         const itemTexto = itensTexto[0];
         const existe = (valor || []).some(
-          (v) => v.tipo === itemTexto.chaveUrl && String(v.id) === valorEntrada.trim()
+          (v) => (v.tipo === itemTexto.chaveUrl || v.type === itemTexto.chaveUrl) && String(v.id) === valorEntrada.trim()
         );
         if (!existe) {
           const optCustomizada: OpcaoGenerica = {
             id: valorEntrada.trim(),
             nome: `${itemTexto.rotulo}: ${valorEntrada.trim()}`,
             tipo: itemTexto.chaveUrl,
+            type: itemTexto.chaveUrl,
           };
           const novoValor = [
-            ...(valor || []).filter((v) => v.tipo !== itemTexto.chaveUrl),
+            ...(valor || []).filter((v) => v.tipo !== itemTexto.chaveUrl && v.type !== itemTexto.chaveUrl),
             optCustomizada,
           ];
           aoMudar({} as SyntheticEvent, novoValor);
@@ -113,9 +118,9 @@ export default function AutocompleteBuscaUnificada({
         disabled={desabilitado}
         size="small"
         sx={{ width: "100%", maxWidth: 800, marginRight: 2, borderRadius: 5 }}
-        groupBy={(opcao) => opcao.tipo}
-        getOptionLabel={(opcao) => opcao.nome}
-        getOptionKey={(opcao) => String(opcao.id) + opcao.tipo}
+        groupBy={(opcao) => (opcao.tipo ?? opcao.type ?? '')}
+        getOptionLabel={(opcao) => opcao.nome ?? ''}
+        getOptionKey={(opcao) => String(opcao.id ?? opcao.nome) + (opcao.tipo ?? opcao.type ?? '')}
         value={valor || []}
         inputValue={valorEntrada}
         onInputChange={(event, novoValorEntrada) => { setValorEntrada(novoValorEntrada); }}
@@ -123,7 +128,7 @@ export default function AutocompleteBuscaUnificada({
           const filtrados = filtroOption(opcoes, params);
           const { inputValue } = params;
 
-          if (inputValue.trim() !== "" && esquema) {
+          if (inputValue.trim() !== "" && esquema.length > 0) {
             const itensTexto = esquema.filter((item) => item.tipoEntrada === "text");
             if (itensTexto.length > 0) {
               itensTexto.forEach((itemTexto) => {
@@ -131,6 +136,7 @@ export default function AutocompleteBuscaUnificada({
                   id: inputValue.trim(),
                   nome: `${itemTexto.rotulo}: ${inputValue.trim()}`,
                   tipo: itemTexto.chaveUrl,
+                  type: itemTexto.chaveUrl,
                 });
               });
             }
@@ -195,6 +201,11 @@ export default function AutocompleteBuscaUnificada({
             {...params}
             variant="outlined"
             placeholder="Pesquisar"
+            onChange={(e) => {
+              if (aoMudarTexto) {
+                aoMudarTexto(e as React.ChangeEvent<HTMLInputElement>);
+              }
+            }}
             onKeyDown={(event) => {
               if (event.key === "Enter" && !listaAberta) {
                 aoBuscar();

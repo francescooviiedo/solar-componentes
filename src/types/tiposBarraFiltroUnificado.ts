@@ -1,7 +1,8 @@
 export type OpcaoGenerica = {
-  id: string | number;
+  id?: string | number | null;
   nome: string;
-  tipo: string;
+  tipo?: string;
+  type?: string;
   cor?: string;
   [key: string]: any;
 };

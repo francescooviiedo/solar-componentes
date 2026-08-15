@@ -54,9 +54,9 @@ export function BarraFiltroUnificado({
   esquema.forEach(item => {
     if (item.tipoEntrada === 'select' && item.opcoes) {
       item.opcoes.forEach(opt => {
-        const estaAtivo = filtrosUnificadosAtivos.some(f => f.tipo === item.chaveUrl && String(f.id) === String(opt.id));
+        const estaAtivo = filtrosUnificadosAtivos.some(f => (f.tipo === item.chaveUrl || f.type === item.chaveUrl) && String(item.chaveValor ? f[item.chaveValor] : (f.id ?? f.nome)) === String(item.chaveValor ? opt[item.chaveValor] : (opt.id ?? opt.nome)));
         if (!estaAtivo) {
-          opcoesUnificadas.push({ ...opt, tipo: item.chaveUrl });
+          opcoesUnificadas.push({ ...opt, tipo: item.chaveUrl, type: item.chaveUrl });
         }
       });
     }
