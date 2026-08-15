@@ -40,3 +40,7 @@ export { default as MainContent } from './components/ui/MainContent';
 export { default as BotoesSituacao } from './components/ui/BotoesSituacao';
 export { GenericMobileCard } from './components/ui/GenericMobileCard';
 export { default as OldLink } from './components/ui/OldLink';
+
+export { default as CollapsibleBox } from "./components/ui/CollapsibleBox";
+export { default as CustomTabPanel } from "./components/ui/CustomTabPanel";
+export { default as EmbedPreview } from "./components/ui/EmbedPreview";
