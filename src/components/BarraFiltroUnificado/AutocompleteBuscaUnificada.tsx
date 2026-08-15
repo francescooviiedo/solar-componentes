@@ -118,12 +118,7 @@ export default function AutocompleteBuscaUnificada({
         getOptionKey={(opcao) => String(opcao.id) + opcao.tipo}
         value={valor || []}
         inputValue={valorEntrada}
-        onInputChange={(event, novoValorEntrada) => {
-          setValorEntrada(novoValorEntrada);
-          if (aoMudarTexto && event) {
-            aoMudarTexto(event as React.ChangeEvent<HTMLInputElement>);
-          }
-        }}
+        onInputChange={(event, novoValorEntrada) => { setValorEntrada(novoValorEntrada); }}
         filterOptions={(opcoes, params) => {
           const filtrados = filtroOption(opcoes, params);
           const { inputValue } = params;
