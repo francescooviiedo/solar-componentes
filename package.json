@@ -1,6 +1,7 @@
 {
   "name": "solar-componentes",
-  "version": "0.1.14",
+  "version": "0.1.16",
+
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
