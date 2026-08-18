@@ -12,6 +12,7 @@ import {
   useMediaQuery
 } from "@mui/material";
 import { TrendingUp } from "@mui/icons-material";
+import { formatNumber } from "../../utils/formatNumber";
 
 type ButtonType<T> = {
   status: T;
@@ -160,7 +161,7 @@ function DesktopCountBadge({
             fontSize={isFullWidth ? 17 : 14}
             color={selectedColor}
           >
-            {count}
+            {formatNumber(count)}
           </Typography>
         </>
       )}
@@ -193,7 +194,7 @@ function MobileCountBadge({ loading, count }: Readonly<MobileCountBadgeProps>) {
         <>
           <TrendingUp sx={{ fontSize: 14, color: "#1976d2", opacity: 0.8 }} />
           <Typography variant="caption" fontWeight="600" color="#1976d2">
-            {count}
+            {formatNumber(count)}
           </Typography>
         </>
       )}

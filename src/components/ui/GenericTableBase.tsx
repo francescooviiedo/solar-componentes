@@ -7,10 +7,10 @@ import {
   TableCell,
   TableBody,
   Typography,
+  Skeleton,
 } from "@mui/material";
 import { ReactNode, RefObject } from "react";
 import TabelaPaginacao from "./TabelaPaginacao";
-import { skeletonRows } from "./SkeletonMiniTables";
 
 type Column = {
   label: string | ReactNode;
@@ -61,13 +61,29 @@ export default function GenericTableBase({
   onInputPageChange,
   onInputPageSubmit,
 }: Readonly<Props>) {
-  let tableBodyContent = (
-    <TableBody>
-      {skeletonRows}
-    </TableBody>
-  );
+  let tableBodyContent;
 
-  if (isEmpty) {
+  if (loading && currentResults === 0) {
+    tableBodyContent = (
+      <TableBody>
+        {Array.from({ length: 10 }).map((_, idx) => (
+          <TableRow
+            key={`skeleton-row-${idx}`}
+            sx={{
+              height: 96,
+              "&:last-child td, &:last-child th": { border: 0 },
+            }}
+          >
+            {columns.map((c, cIdx) => (
+              <TableCell key={cIdx} align={c.align || "center"} sx={{ verticalAlign: "middle" }}>
+                <Skeleton width="70%" height={24} sx={{ mx: "auto" }} />
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    );
+  } else if (isEmpty) {
     tableBodyContent = (
       <TableBody>
         <TableRow>
@@ -79,9 +95,7 @@ export default function GenericTableBase({
         </TableRow>
       </TableBody>
     );
-  }
-
-  if (!loading && !isEmpty) {
+  } else {
     tableBodyContent = (
       <TableBody>
         {children}

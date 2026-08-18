@@ -78,15 +78,24 @@ export function FilterLayout({
                 onClick={onSearch}
                 startIcon={<SearchIcon />}
                 loading={isPending}
-                sx={{ borderRadius: 2 }}
+                sx={{
+                  borderRadius: 2,
+                  fontSize: "16px",
+                  color: "white",
+                }}
               >
                 Pesquisar
               </Button>
               <Button
                 onClick={onClear}
-                color="inherit"
-                variant="outlined"
-                sx={{ borderRadius: 2 }}
+                variant="contained"
+                sx={{
+                  borderRadius: 2,
+                  fontSize: "16px",
+                  backgroundColor: "#757575",
+                  borderColor: "grey.600",
+                  color: "white",
+                }}
               >
                 {isAbsolute ? "Limpar" : "limpar"}
               </Button>
