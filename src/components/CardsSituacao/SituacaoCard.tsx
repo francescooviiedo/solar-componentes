@@ -8,7 +8,7 @@ import { Skeleton } from "@mui/material";
 
 export type SituacaoCardProps = {
   title: string;
-  count: number;
+  count: number | string;
   color: string;
   titleColor: string;
   icon: React.ReactNode;
@@ -16,6 +16,8 @@ export type SituacaoCardProps = {
   onClick: () => void;
   isPending: boolean;
   isMobile?: boolean;
+  countFontSize?: string | number;
+  titleFontSize?: string | number;
 };
 
 export const SituacaoCard: React.FC<Readonly<SituacaoCardProps>> = ({
@@ -28,6 +30,8 @@ export const SituacaoCard: React.FC<Readonly<SituacaoCardProps>> = ({
   onClick,
   isPending,
   isMobile = false,
+  countFontSize,
+  titleFontSize: customTitleFontSize,
 }) => {
   const cardHeight = isMobile ? 100 : 120;
   const cardWidth = isMobile ? 140 : "100%";
@@ -37,8 +41,8 @@ export const SituacaoCard: React.FC<Readonly<SituacaoCardProps>> = ({
     ? "flex-1 min-w-[120px] max-w-40 mx-auto"
     : "flex-1 min-w-[200px]";
   const countVariant = isMobile ? "subtitle1" : "h5";
-  const textFontSize = isMobile ? 12 : "22px";
-  const titleFontSize = isMobile ? 10 : "14px";
+  const textFontSize = countFontSize ?? (isMobile ? 12 : "14px");
+  const titleFontSize = customTitleFontSize ?? (isMobile ? 10 : "14px");
 
   let countContent: React.ReactNode = <Skeleton width={60} height={18} />;
   if (!isPending) {
