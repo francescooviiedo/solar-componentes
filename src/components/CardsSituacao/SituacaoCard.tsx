@@ -41,8 +41,8 @@ export const SituacaoCard: React.FC<Readonly<SituacaoCardProps>> = ({
     ? "flex-1 min-w-[120px] max-w-40 mx-auto"
     : "flex-1 min-w-[200px]";
   const countVariant = isMobile ? "subtitle1" : "h5";
-  const textFontSize = countFontSize ?? (isMobile ? 12 : "14px");
-  const titleFontSize = customTitleFontSize ?? (isMobile ? 10 : "14px");
+  const textFontSize = isMobile ? 12 : "22px";
+
 
   let countContent: React.ReactNode = <Skeleton width={60} height={18} />;
   if (!isPending) {
@@ -110,7 +110,7 @@ export const SituacaoCard: React.FC<Readonly<SituacaoCardProps>> = ({
                 color={titleColor}
                 component="div"
                 fontWeight={700}
-                sx={{ fontSize: isMobile ? titleFontSize : "14px" }}
+                sx={{ fontSize: textFontSize }}
               >
                 {title}
               </Typography>
