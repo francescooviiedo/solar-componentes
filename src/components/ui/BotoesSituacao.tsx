@@ -278,7 +278,7 @@ export default function BotoesSituacao<TPayload, TStatus>({
 }: Readonly<Props<TPayload, TStatus>>) {
   const [selected, setSelected] = useState<TStatus>(inicial);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const titleVariant = getTitleVariant(isMobile, isFullWidth);
   const iconSize = getIconSize(isMobile, isFullWidth);
   const desktopWidth = getDesktopWidth(isMobile, isFullWidth);

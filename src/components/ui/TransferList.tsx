@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import SearchIcon from "@mui/icons-material/Search";
 
 type TransferListProps<T> = Readonly<{
@@ -150,7 +152,7 @@ export function TransferList<T>({
       {(availableTitle || selectedTitle) && (
         <Box
           sx={{
-            display: "grid",
+            display: { xs: "none", md: "grid" },
             gridTemplateColumns: "1fr 1fr",
             gap: "95px",
             marginBottom: "16px",
@@ -189,157 +191,174 @@ export function TransferList<T>({
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "1fr auto 1fr",
+          gridTemplateColumns: { xs: "1fr", md: "1fr auto 1fr" },
           gap: "16px",
           alignItems: "flex-start",
         }}
       >
-        <Box
-          sx={{
-            border: "1px solid #E0E0E0",
-            borderRadius: "8px",
-            overflow: "hidden",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-            backgroundColor: "#FFFFFF",
-          }}
-        >
+        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+          {availableTitle && (
+            <Typography
+              sx={{
+                display: { xs: "block", md: "none" },
+                fontFamily: "Inter",
+                fontWeight: 700,
+                fontSize: "15px",
+                color: "#757575",
+                mb: 1,
+              }}
+            >
+              {availableTitle}
+            </Typography>
+          )}
           <Box
             sx={{
-              padding: "12px 16px",
-              borderBottom: "1px solid #E0E0E0",
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-              backgroundColor: "#FAFAFA",
+              border: "1px solid #E0E0E0",
+              borderRadius: "8px",
+              overflow: "hidden",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+              backgroundColor: "#FFFFFF",
             }}
           >
-            <Checkbox
+            <Box
               sx={{
-                padding: 0,
-                color: "#207840",
-                "&.Mui-checked": { color: "#207840" },
+                padding: "12px 16px",
+                borderBottom: "1px solid #E0E0E0",
+                display: "flex",
+                alignItems: "center",
+                gap: "15px",
+                backgroundColor: "#FAFAFA",
               }}
-              checked={isAllFilteredAvailableChecked}
-              indeterminate={
-                filteredAvailableIds.some((id) =>
-                  checkedAvailable.includes(id)
-                ) && !isAllFilteredAvailableChecked
-              }
-              onChange={handleSelectAllAvailable}
-              disabled={disabled}
-            />
-            <Typography sx={{ fontSize: "16px", color: "#848484" }}>
-              Selecionar Todos
-            </Typography>
-          </Box>
-          <Box sx={{ padding: "12px 16px", borderBottom: "1px solid #E0E0E0" }}>
-            <TextField
-              size="small"
-              fullWidth
-              variant="outlined"
-              placeholder="Pesquisar..."
-              value={searchAvailable}
-              onChange={(e) => setSearchAvailable(e.target.value)}
-              disabled={disabled}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: "#9E9E9E", fontSize: "20px" }} />
-                  </InputAdornment>
-                ),
-                sx: {
-                  borderRadius: "6px",
-                  height: "36px",
-                  fontSize: "14px",
-                  backgroundColor: "#FAFAFA",
-                  "& fieldset": { borderColor: "#E0E0E0" },
-                  "&:hover fieldset": { borderColor: "#BDBDBD" },
-                  "&.Mui-focused fieldset": { borderColor: "#207840" },
-                },
-              }}
-            />
-          </Box>
-          <List
-            sx={{
-              maxHeight: "300px",
-              minHeight: "300px",
-              overflow: "auto",
-              width: "100%",
-              color: "#848484",
-              fontSize: "14px",
-              padding: "4px 0",
-            }}
-          >
-            {filteredAvailable.length === 0 ? (
-              <Box
+            >
+              <Checkbox
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "220px",
-                  color: "#9E9E9E",
-                  gap: "8px",
+                  padding: 0,
+                  color: "#207840",
+                  "&.Mui-checked": { color: "#207840" },
                 }}
-              >
-                <SearchIcon sx={{ fontSize: "32px", color: "#BDBDBD" }} />
-                <Typography sx={{ fontSize: "14px", color: "#9E9E9E" }}>
-                  Nenhum resultado encontrado
-                </Typography>
-              </Box>
-            ) : (
-              filteredAvailable.map((item) => {
-                const id = getUniqueId(item);
-                return (
-                  <ListItem
-                    key={id}
-                    disablePadding
-                    onClick={() => !disabled && handleToggleAvailable(item)}
-                  >
-                    <ListItemButton
-                      disabled={disabled}
-                      sx={{
-                        padding: "8px 16px",
-                        margin: "2px 8px",
-                        borderRadius: "6px",
-                        transition: "all 0.2s ease-in-out",
-                        "&:hover": {
-                          backgroundColor: "#EAF3EC",
-                          color: "#207840",
-                        },
-                      }}
+                checked={isAllFilteredAvailableChecked}
+                indeterminate={
+                  filteredAvailableIds.some((id) =>
+                    checkedAvailable.includes(id)
+                  ) && !isAllFilteredAvailableChecked
+                }
+                onChange={handleSelectAllAvailable}
+                disabled={disabled}
+              />
+              <Typography sx={{ fontSize: "16px", color: "#848484" }}>
+                Selecionar Todos
+              </Typography>
+            </Box>
+            <Box sx={{ padding: "12px 16px", borderBottom: "1px solid #E0E0E0" }}>
+              <TextField
+                size="small"
+                fullWidth
+                variant="outlined"
+                placeholder="Pesquisar..."
+                value={searchAvailable}
+                onChange={(e) => setSearchAvailable(e.target.value)}
+                disabled={disabled}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: "#9E9E9E", fontSize: "20px" }} />
+                    </InputAdornment>
+                  ),
+                  sx: {
+                    borderRadius: "6px",
+                    height: "36px",
+                    fontSize: "14px",
+                    backgroundColor: "#FAFAFA",
+                    "& fieldset": { borderColor: "#E0E0E0" },
+                    "&:hover fieldset": { borderColor: "#BDBDBD" },
+                    "&.Mui-focused fieldset": { borderColor: "#207840" },
+                  },
+                }}
+              />
+            </Box>
+            <List
+              sx={{
+                maxHeight: "300px",
+                minHeight: "300px",
+                overflow: "auto",
+                width: "100%",
+                color: "#848484",
+                fontSize: "14px",
+                padding: "4px 0",
+              }}
+            >
+              {filteredAvailable.length === 0 ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "220px",
+                    color: "#9E9E9E",
+                    gap: "8px",
+                  }}
+                >
+                  <SearchIcon sx={{ fontSize: "32px", color: "#BDBDBD" }} />
+                  <Typography sx={{ fontSize: "14px", color: "#9E9E9E" }}>
+                    Nenhum resultado encontrado
+                  </Typography>
+                </Box>
+              ) : (
+                filteredAvailable.map((item) => {
+                  const id = getUniqueId(item);
+                  return (
+                    <ListItem
+                      key={id}
+                      disablePadding
+                      onClick={() => !disabled && handleToggleAvailable(item)}
                     >
-                      <Box sx={{ display: "flex", marginRight: "15px" }}>
-                        <Checkbox
-                          sx={{
-                            padding: 0,
+                      <ListItemButton
+                        disabled={disabled}
+                        sx={{
+                          padding: "8px 16px",
+                          margin: "2px 8px",
+                          borderRadius: "6px",
+                          transition: "all 0.2s ease-in-out",
+                          "&:hover": {
+                            backgroundColor: "#EAF3EC",
                             color: "#207840",
-                            "&.Mui-checked": { color: "#207840" },
-                          }}
-                          checked={checkedAvailable.includes(id)}
-                          tabIndex={-1}
-                          disableRipple
-                          disabled={disabled}
-                        />
-                      </Box>
-                      <ListItemText primary={renderLabel(item)} />
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })
-            )}
-          </List>
+                          },
+                        }}
+                      >
+                        <Box sx={{ display: "flex", marginRight: "15px" }}>
+                          <Checkbox
+                            sx={{
+                              padding: 0,
+                              color: "#207840",
+                              "&.Mui-checked": { color: "#207840" },
+                            }}
+                            checked={checkedAvailable.includes(id)}
+                            tabIndex={-1}
+                            disableRipple
+                            disabled={disabled}
+                          />
+                        </Box>
+                        <ListItemText primary={renderLabel(item)} />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })
+              )}
+            </List>
+          </Box>
         </Box>
 
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: { xs: "row", md: "column" },
             gap: "12px",
             justifyContent: "center",
             alignItems: "center",
             height: "100%",
             alignSelf: "center",
+            my: { xs: 1, md: 0 },
           }}
         >
           <Button
@@ -347,156 +366,174 @@ export function TransferList<T>({
             size="large"
             onClick={handleTransferToSelected}
             disabled={disabled || checkedAvailable.length === 0}
-            sx={{ width: "14px", height: "28px", padding: 0 }}
+            sx={{ minWidth: { xs: "40px", md: "14px" }, width: { xs: "40px", md: "14px" }, height: { xs: "40px", md: "28px" }, padding: 0 }}
           >
-            <ChevronRight />
+            <Box sx={{ display: { xs: "none", md: "flex" } }}><ChevronRight /></Box>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}><ExpandMoreIcon /></Box>
           </Button>
           <Button
             variant="outlined"
             size="large"
             onClick={handleTransferToAvailable}
             disabled={disabled || checkedSelected.length === 0}
-            sx={{ width: "14px", height: "28px", padding: 0 }}
+            sx={{ minWidth: { xs: "40px", md: "14px" }, width: { xs: "40px", md: "14px" }, height: { xs: "40px", md: "28px" }, padding: 0 }}
           >
-            <ChevronLeft />
+            <Box sx={{ display: { xs: "none", md: "flex" } }}><ChevronLeft /></Box>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}><ExpandLessIcon /></Box>
           </Button>
         </Box>
 
-        <Box
-          sx={{
-            border: "1px solid #E0E0E0",
-            borderRadius: "8px",
-            overflow: "hidden",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-            backgroundColor: "#FFFFFF",
-          }}
-        >
+        <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+          {selectedTitle && (
+            <Typography
+              sx={{
+                display: { xs: "block", md: "none" },
+                fontFamily: "Inter",
+                fontWeight: 700,
+                fontSize: "15px",
+                color: "#757575",
+                mb: 1,
+              }}
+            >
+              {selectedTitle}
+            </Typography>
+          )}
           <Box
             sx={{
-              padding: "12px 16px",
-              borderBottom: "1px solid #E0E0E0",
-              display: "flex",
-              alignItems: "center",
-              gap: "15px",
-              backgroundColor: "#FAFAFA",
+              border: "1px solid #E0E0E0",
+              borderRadius: "8px",
+              overflow: "hidden",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+              backgroundColor: "#FFFFFF",
             }}
           >
-            <Checkbox
+            <Box
               sx={{
-                padding: 0,
-                color: "#207840",
-                "&.Mui-checked": { color: "#207840" },
+                padding: "12px 16px",
+                borderBottom: "1px solid #E0E0E0",
+                display: "flex",
+                alignItems: "center",
+                gap: "15px",
+                backgroundColor: "#FAFAFA",
               }}
-              checked={isAllFilteredSelectedChecked}
-              indeterminate={
-                filteredSelectedIds.some((id) =>
-                  checkedSelected.includes(id)
-                ) && !isAllFilteredSelectedChecked
-              }
-              onChange={handleSelectAllSelected}
-              disabled={disabled}
-            />
-            <Typography sx={{ fontSize: "16px", color: "#848484" }}>
-              Selecionar Todos
-            </Typography>
-          </Box>
-          <Box sx={{ padding: "12px 16px", borderBottom: "1px solid #E0E0E0" }}>
-            <TextField
-              size="small"
-              fullWidth
-              variant="outlined"
-              placeholder="Pesquisar..."
-              value={searchSelected}
-              onChange={(e) => setSearchSelected(e.target.value)}
-              disabled={disabled}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: "#9E9E9E", fontSize: "20px" }} />
-                  </InputAdornment>
-                ),
-                sx: {
-                  borderRadius: "6px",
-                  height: "36px",
-                  fontSize: "14px",
-                  backgroundColor: "#FAFAFA",
-                  "& fieldset": { borderColor: "#E0E0E0" },
-                  "&:hover fieldset": { borderColor: "#BDBDBD" },
-                  "&.Mui-focused fieldset": { borderColor: "#207840" },
-                },
-              }}
-            />
-          </Box>
-          <List
-            sx={{
-              maxHeight: "300px",
-              minHeight: "300px",
-              overflow: "auto",
-              width: "100%",
-              color: "#848484",
-              fontSize: "14px",
-              padding: "4px 0",
-            }}
-          >
-            {filteredSelected.length === 0 ? (
-              <Box
+            >
+              <Checkbox
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "220px",
-                  color: "#9E9E9E",
-                  gap: "8px",
+                  padding: 0,
+                  color: "#207840",
+                  "&.Mui-checked": { color: "#207840" },
                 }}
-              >
-                <SearchIcon sx={{ fontSize: "32px", color: "#BDBDBD" }} />
-                <Typography sx={{ fontSize: "14px", color: "#9E9E9E" }}>
-                  Nenhum resultado encontrado
-                </Typography>
-              </Box>
-            ) : (
-              filteredSelected.map((item) => {
-                const id = getUniqueId(item);
-                return (
-                  <ListItem
-                    key={id}
-                    disablePadding
-                    onClick={() => !disabled && handleToggleSelected(item)}
-                  >
-                    <ListItemButton
-                      disabled={disabled}
-                      sx={{
-                        padding: "8px 16px",
-                        margin: "2px 8px",
-                        borderRadius: "6px",
-                        transition: "all 0.2s ease-in-out",
-                        "&:hover": {
-                          backgroundColor: "#EAF3EC",
-                          color: "#207840",
-                        },
-                      }}
+                checked={isAllFilteredSelectedChecked}
+                indeterminate={
+                  filteredSelectedIds.some((id) =>
+                    checkedSelected.includes(id)
+                  ) && !isAllFilteredSelectedChecked
+                }
+                onChange={handleSelectAllSelected}
+                disabled={disabled}
+              />
+              <Typography sx={{ fontSize: "16px", color: "#848484" }}>
+                Selecionar Todos
+              </Typography>
+            </Box>
+            <Box sx={{ padding: "12px 16px", borderBottom: "1px solid #E0E0E0" }}>
+              <TextField
+                size="small"
+                fullWidth
+                variant="outlined"
+                placeholder="Pesquisar..."
+                value={searchSelected}
+                onChange={(e) => setSearchSelected(e.target.value)}
+                disabled={disabled}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: "#9E9E9E", fontSize: "20px" }} />
+                    </InputAdornment>
+                  ),
+                  sx: {
+                    borderRadius: "6px",
+                    height: "36px",
+                    fontSize: "14px",
+                    backgroundColor: "#FAFAFA",
+                    "& fieldset": { borderColor: "#E0E0E0" },
+                    "&:hover fieldset": { borderColor: "#BDBDBD" },
+                    "&.Mui-focused fieldset": { borderColor: "#207840" },
+                  },
+                }}
+              />
+            </Box>
+            <List
+              sx={{
+                maxHeight: "300px",
+                minHeight: "300px",
+                overflow: "auto",
+                width: "100%",
+                color: "#848484",
+                fontSize: "14px",
+                padding: "4px 0",
+              }}
+            >
+              {filteredSelected.length === 0 ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "220px",
+                    color: "#9E9E9E",
+                    gap: "8px",
+                  }}
+                >
+                  <SearchIcon sx={{ fontSize: "32px", color: "#BDBDBD" }} />
+                  <Typography sx={{ fontSize: "14px", color: "#9E9E9E" }}>
+                    Nenhum resultado encontrado
+                  </Typography>
+                </Box>
+              ) : (
+                filteredSelected.map((item) => {
+                  const id = getUniqueId(item);
+                  return (
+                    <ListItem
+                      key={id}
+                      disablePadding
+                      onClick={() => !disabled && handleToggleSelected(item)}
                     >
-                      <Box sx={{ display: "flex", marginRight: "15px" }}>
-                        <Checkbox
-                          sx={{
-                            padding: 0,
+                      <ListItemButton
+                        disabled={disabled}
+                        sx={{
+                          padding: "8px 16px",
+                          margin: "2px 8px",
+                          borderRadius: "6px",
+                          transition: "all 0.2s ease-in-out",
+                          "&:hover": {
+                            backgroundColor: "#EAF3EC",
                             color: "#207840",
-                            "&.Mui-checked": { color: "#207840" },
-                          }}
-                          checked={checkedSelected.includes(id)}
-                          tabIndex={-1}
-                          disableRipple
-                          disabled={disabled}
-                        />
-                      </Box>
-                      <ListItemText primary={renderLabel(item)} />
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })
-            )}
-          </List>
+                          },
+                        }}
+                      >
+                        <Box sx={{ display: "flex", marginRight: "15px" }}>
+                          <Checkbox
+                            sx={{
+                              padding: 0,
+                              color: "#207840",
+                              "&.Mui-checked": { color: "#207840" },
+                            }}
+                            checked={checkedSelected.includes(id)}
+                            tabIndex={-1}
+                            disableRipple
+                            disabled={disabled}
+                          />
+                        </Box>
+                        <ListItemText primary={renderLabel(item)} />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })
+              )}
+            </List>
+          </Box>
         </Box>
       </Box>
     </Box>

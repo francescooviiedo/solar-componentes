@@ -52,7 +52,7 @@ export const SituacaoCard: React.FC<Readonly<SituacaoCardProps>> = ({
         component="div"
         color={titleColor}
         pb={"10px"}
-        sx={{ fontSize: textFontSize }}
+        sx={{ fontSize: countFontSize ?? textFontSize }}
       >
         {count}
       </Typography>
@@ -110,7 +110,7 @@ export const SituacaoCard: React.FC<Readonly<SituacaoCardProps>> = ({
                 color={titleColor}
                 component="div"
                 fontWeight={700}
-                sx={{ fontSize: textFontSize }}
+                sx={{ fontSize: customTitleFontSize ?? textFontSize }}
               >
                 {title}
               </Typography>

@@ -32,7 +32,7 @@ export default function CollapsibleBox({
   onToggleCollapse,
   children,
   height = "100%",
-  maxWidth = "400px",
+  maxWidth = "100%",
   marginTop = 0,
   hidden = false,
   collapseOnDesktop = false,
