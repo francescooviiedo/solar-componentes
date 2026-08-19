@@ -9,3 +9,6 @@ export * from "./stringUtils";
 export * from "./hasDivider";
 export * from "./toBase64";
 export * from "./arrayUtils";
+export * from "./removeDuplicates";
+export * from "./obterCorDoSistema";
+export * from "./paginarOffsetLimit";

@@ -48,7 +48,16 @@ export * from "./components/ui/StatusIndicator";
 export * from "./components/ui/InfoItem";
 export * from "./components/ui/FloatingDataGridHeader";
 
+// Newly Migrated UI Components
+export * from "./components/ui/AutoCompleteField";
+export * from "./components/ui/CheckboxField";
+export * from "./components/ui/SelectIcone";
+export * from "./components/ui/SolarLogo";
+export * from "./components/ui/StatusChip";
+export * from "./components/ui/TableSkeleton";
 
+// Hooks
+export * from "./hooks";
 
 // Utilities & Formatters
 export * from "./utils";
